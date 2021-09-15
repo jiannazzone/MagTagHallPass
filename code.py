@@ -74,6 +74,12 @@ def setupDisplay():
     passActive = False
     magtag.refresh()
 
+def networkConnect():
+    global magtag
+    magtag.network.connect()
+    flashNeo(GREEN)
+    print("WiFi Success")
+
 
 # Get current time and activate Hall Pass
 def activateHallPass():
@@ -81,13 +87,11 @@ def activateHallPass():
     global passActive
 
     try:
-        magtag.network.connect()
-        flashNeo(GREEN)
-        print("WiFi Success")
+        networkConnect()
     except ConnectionError as e:
         print("Retrying - ", e)
         flashNeo(RED)
-        activateHallPass()
+        networkConnect()
 
     try:
         currentTime = magtag.fetch(auto_refresh=False)
@@ -112,6 +116,7 @@ def buttonChecker():
                 magtag.peripherals.neopixel_disable = False
                 if all(resetList):
                     magtag.peripherals.neopixel_disable = True
+                    time.sleep(flashTime)
                     flashNeo(RED)
                     magtag.peripherals.deinit()
                     setupDisplay()
