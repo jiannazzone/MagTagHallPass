@@ -25,10 +25,10 @@ This is for all of you teachers who are tired of writing hall passes! The **MagT
     * simpleio.mpy
 4. Download code.py and install it to the root of CIRCUITPY
 
-## Making a custom Background
+### Making a custom Background
 If you would like a custom backround for your tag, you will need to create a 128x296 bitmap image and add your own. I used Adobe Photoshop and created the file in Greyscale mode. Name it `background.bmp` and install it to the root of CIRCUITPY.
 
-## Secrets File
+### Secrets File
 If you need a template for the secrets file, you can use this one and save it as `secrets.py` to the root of CIRCUITPY. If connecting to an open WiFi network, leave the password as `''` (no space). You will need an account at https://io.adafruit.com/ to get your `aio_username` and `aio_key`.
 ```
 # This file is where you keep secret settings, passwords, and tokens!
@@ -42,3 +42,13 @@ secrets = {
     'timezone' : "America/New_York", # http://worldtimeapi.org/timezones
     }
 ```
+
+## How to Use
+
+### Startup
+When you start up the device, it will prepare the first Hall Pass automatically. You don't need to press any buttons. If it flashes green, it successfully connected to the SSID indicated in `secrets.py`. If it flashes red, then it could not find the network. There are two potential causes:
+1. The ESP32 can only scan for a certain number of SSIDs at a time. It might take a few scans for yours to appear in the list if you are in a congested environment.
+2. There is an issues with the SSID or password in `secrets.py`. Double-check them!
+
+### After Use
+When the student returns, press the 4 face buttons in any order. The device will go into a deep sleep mode. Pressing the bottom face button will wake up the device and prepare another Hall Pass.
