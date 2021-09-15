@@ -49,6 +49,7 @@ secrets = {
 When you start up the device, it will prepare the first Hall Pass automatically. You don't need to press any buttons. If it flashes green, it successfully connected to the SSID indicated in `secrets.py`. If it flashes red, then it could not find the network. There are two potential causes:
 1. The ESP32 can only scan for a certain number of SSIDs at a time. It might take a few scans for yours to appear in the list if you are in a congested environment.
 2. There is an issues with the SSID or password in `secrets.py`. Double-check them!
+The device will automatically retry the network connection until one is successfully established.
 
 ### After Use
-When the student returns, press the 4 face buttons in any order. The device will go into a deep sleep mode. Pressing the bottom face button will wake up the device and prepare another Hall Pass.
+When the student returns, press the 4 face buttons in any order. The device will go into a deep sleep mode. Pressing the bottom face button will wake up the device and prepare another Hall Pass (as labeled on the display).
