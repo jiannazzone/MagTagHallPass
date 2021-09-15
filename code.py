@@ -50,9 +50,10 @@ def flashNeo(color):
 def resetDisplay():
     global magtag
     global passActive
-    magtag.set_text('Null', index=0)
-    magtag.set_text('Pass', index=1)
+    magtag.set_text('Null', index=0, auto_refresh=False)
+    magtag.set_text('Pass', index=1, auto_refresh=False)
     passActive = False
+    magtag.refresh()
 
 # Initialize display
 def setupDisplay():
@@ -83,13 +84,14 @@ def activateHallPass():
     global magtag
     global passActive
     try:
-        currentTime = ''
-        currentTime = magtag.fetch()
-        currentTime = currentTime.split(' ')
+        currentTime = magtag.fetch(auto_refresh=False)
+        currentTime = currentTime.strip().split(' ')
+        print(currentTime)
         flashNeo(GREEN)
-        for i in range(2):
-            magtag.set_text(currentTime[i], index=i)
+        for i in range(len(currentTime)):
+            magtag.set_text(currentTime[i], index=i, auto_refresh=False)
         passActive = True
+        magtag.refresh()
         # magtag.exit_and_deep_sleep(60)
     except (RuntimeError, ValueError) as e:
         print('Retrying - ', e)
