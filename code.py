@@ -3,6 +3,7 @@ from adafruit_led_animation.color import RED, GREEN, BLUE, CYAN, WHITE,\
     OLD_LACE, PURPLE, MAGENTA, YELLOW, ORANGE, PINK
 import time
 
+# Get secrets from private file
 try:
     from secrets import secrets
 except ImportError:
@@ -20,6 +21,7 @@ TIME_URL = (
 )
 TIME_URL += "&fmt=%25l:%25M %25p"
 
+### --- GLOBAL VARIABLES --- ###
 passActive = False
 resetList = [False, False, False, False]
 pixelColors = [RED, ORANGE, YELLOW, GREEN]
@@ -29,6 +31,9 @@ magtag = MagTag(url=TIME_URL, rotation=180)
 magtag_pixels = magtag.peripherals.neopixels
 magtag_pixels.brightness = 1.0
 
+### --- CUSTOM FUNCTIONS --- ###
+
+# Custom flash sequence
 def flashNeo(color):
     global magtag
     global magtag_pixels
@@ -41,6 +46,7 @@ def flashNeo(color):
         time.sleep(flashTime)
     magtag.peripherals.neopixel_disable = True
 
+# Reset MagTag text for next Hall Pass use
 def resetDisplay():
     global magtag
     global passActive
@@ -48,7 +54,7 @@ def resetDisplay():
     magtag.set_text('Pass', index=1)
     passActive = False
 
-
+# Initialize display
 def setupDisplay():
     global magtag
 
@@ -72,6 +78,7 @@ def setupDisplay():
     )
     resetDisplay()
 
+# Get current time and activate Hall Pass
 def activateHallPass():
     global magtag
     global passActive
@@ -87,10 +94,18 @@ def activateHallPass():
     except (RuntimeError, ValueError) as e:
         print('Retrying - ', e)
 
+### --- RUNTIME CODE --- ###
+
+# Initliaze display (only run on first start)
 setupDisplay()
 
+# Main Loop
 while True:
+
+    # Loop through buttons, checking for input
     for i, b in enumerate(magtag.peripherals.buttons):
+
+        # Try to connect to WiFi and activate the Hall Pass
         if not b.value and not passActive:
             try:
                 magtag.network.connect()
@@ -99,6 +114,8 @@ while True:
             except ConnectionError as e:
                 print("Retrying - ", e)
                 flashNeo(RED)
+
+        # If pass has been activated, listen for reset condition
         if passActive:
             magtag.peripherals.neopixel_disable = False
             if all(resetList):
