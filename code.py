@@ -76,22 +76,26 @@ def setupDisplay():
 
 def networkConnect():
     global magtag
-    magtag.network.connect()
-    flashNeo(GREEN)
-    print("WiFi Success")
+    try:
+        magtag.network.connect()
+        flashNeo(GREEN)
+        print("WiFi Success")
+    except ConnectionError as e:
+        print('Retrying - ', e)
+        networkConnect()
 
 
 # Get current time and activate Hall Pass
 def activateHallPass():
     global magtag
+    global magtag_pixels
     global passActive
 
-    try:
-        networkConnect()
-    except ConnectionError as e:
-        print("Retrying - ", e)
-        flashNeo(RED)
-        networkConnect()
+    magtag_pixels[0] = GREEN
+    time.sleep(flashTime)
+    magtag_pixels[0] = (0, 0, 0)
+
+    networkConnect()
 
     try:
         currentTime = magtag.fetch(auto_refresh=False)
