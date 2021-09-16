@@ -55,4 +55,6 @@ The device will automatically retry the network connection until one is successf
 ### After Use
 When the student returns, press the 4 face buttons in any order. The device will go into a deep sleep mode. Pressing the bottom face button will wake up the device and prepare another Hall Pass (as labeled on the display).
 
+#### YouTube Video
+Click the thumbnail!
 [![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/E_xNNHra5bw/0.jpg)](http://www.youtube.com/watch?v=E_xNNHra5bw)
