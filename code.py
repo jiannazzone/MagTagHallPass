@@ -2,7 +2,6 @@ from adafruit_magtag.magtag import MagTag
 import time
 import alarm
 import board
-import random
 
 # Get secrets from private file
 try:
@@ -74,16 +73,6 @@ def setupDisplay():
     passActive = False
     magtag.refresh()
 
-def networkConnect():
-    global magtag
-    try:
-        magtag.network.connect()
-        flashNeo(GREEN)
-        print("WiFi Success")
-    except ConnectionError as e:
-        print('Retrying - ', e)
-        networkConnect()
-
 
 # Get current time and activate Hall Pass
 def activateHallPass():
@@ -95,7 +84,14 @@ def activateHallPass():
     time.sleep(flashTime)
     magtag_pixels[0] = (0, 0, 0)
 
-    networkConnect()
+    try:
+        magtag.network.connect()
+        flashNeo(GREEN)
+        print("WiFi Success")
+    except ConnectionError as e:
+        print('Retrying - ', e)
+        flashNeo(RED)
+        magtag.exit_and_deep_sleep(1)
 
     try:
         currentTime = magtag.fetch(auto_refresh=False)
